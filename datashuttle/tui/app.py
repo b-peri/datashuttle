@@ -98,10 +98,15 @@ class TuiApp(App):
     def show_modal_error_dialog(self, message):
         self.push_screen(modal_dialogs.MessageBox(message, border_color="red"))
 
+    def show_messagebox(self, message):
+        self.push_screen(
+            modal_dialogs.MessageBox(message, border_color="gray")
+        )
+
     def handle_open_filesystem_browser(self, path_):
         if not path_.exists():
             self.show_modal_error_dialog(
-                f"{path_.as_posix()} cannto be opened as it "
+                f"{path_.as_posix()} cannot be opened as it "
                 f"does not exist on the filesystem."
             )
             return
@@ -149,7 +154,6 @@ class TuiApp(App):
     def get_global_settings_path(self):
         """
         The cannoincal path for the TUI's global settings.
-
         """
         path_ = canonical_folders.get_datashuttle_path()
         return path_ / "global_tui_settings.yaml"

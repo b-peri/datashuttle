@@ -2,14 +2,14 @@ from pathlib import Path
 
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal
-from textual.screen import ModalScreen
+from textual.screen import ModalScreen, Screen
 from textual.widgets import Button, Label, Static
 
 from datashuttle.tui.custom_widgets import CustomDirectoryTree
 from datashuttle.tui.utils.tui_decorators import require_double_click
 
 
-class MessageBox(ModalScreen):
+class MessageBox(Screen):
     """
     A screen for rendering error messages.
 
@@ -54,7 +54,9 @@ class MessageBox(ModalScreen):
         self.dismiss(True)
 
 
-class ConfirmScreen(ModalScreen):
+class ConfirmScreen(
+    ModalScreen
+):  # TODO: rename, this is now soley for data transfer
     """
     A screen for rendering confirmation messages.
     """
@@ -77,7 +79,11 @@ class ConfirmScreen(ModalScreen):
 
     def on_button_pressed(self, event) -> None:
         if event.button.id == "confirm_ok_button":
-            self.dismiss(True)
+            self.query_one("#confirm_button_container").visible = False
+            self.query_one("#confirm_message_label").update("Transferring...")
+            self.query_one("#confirm_message_label").call_after_refresh(
+                lambda: self.dismiss(True)
+            )  # TODO: this is terrible hack and not the best way to do this.
         else:
             self.dismiss(False)
 

@@ -251,6 +251,13 @@ class TransferTab(TreeAndInputTab):
 
             self.reload_directorytree()
 
+            self.mainwindow.show_messagebox(
+                "Transfer finished."
+                "\n\n"
+                "Check the most recent logs to "
+                "ensure transfer completed successfully."
+            )
+
     def transfer_entire_project(self, upload):
         try:
             if upload:
